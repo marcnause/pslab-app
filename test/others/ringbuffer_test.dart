@@ -49,7 +49,7 @@ void main() {
     expect(ringbuffer.length, 0);
     expect(() => ringbuffer[-1], throwsRangeError);
     expect(() => ringbuffer[0], throwsRangeError);
-    ringbuffer.add("first");
+    ringbuffer.add('first');
     expect(ringbuffer.length, 1);
     expect(() => ringbuffer[1], throwsRangeError);
   });
@@ -57,9 +57,9 @@ void main() {
   test('fill and clear', () {
     Ringbuffer<String> ringbuffer = Ringbuffer(2);
     expect(ringbuffer.length, 0);
-    ringbuffer.add("first");
+    ringbuffer.add('first');
     expect(ringbuffer.length, 1);
-    ringbuffer.add("second");
+    ringbuffer.add('second');
     expect(ringbuffer.length, 2);
     ringbuffer.clear();
     expect(ringbuffer.length, 0);
@@ -67,8 +67,44 @@ void main() {
 
   test('write with index', () {
     Ringbuffer<String> ringbuffer = Ringbuffer(2);
-    expect(() => ringbuffer[0] = "first", throwsUnsupportedError);
+    expect(() => ringbuffer[0] = 'first', throwsUnsupportedError);
     expect(ringbuffer.length, 0);
     expect(() => ringbuffer[0], throwsRangeError);
+  });
+
+  test('test iterator', () {
+    Ringbuffer<String> ringbuffer = Ringbuffer(4);
+    var elements = ['first', 'second', 'third'];
+    var i = 0;
+    expect(ringbuffer.length, 0);
+    ringbuffer.add(elements[i++]);
+    expect(ringbuffer.length, 1);
+    ringbuffer.add(elements[i++]);
+    expect(ringbuffer.length, 2);
+    ringbuffer.add(elements[i++]);
+    expect(ringbuffer.length, 3);
+
+    var iter = ringbuffer.iterator;
+    i = 0;
+    while (iter.moveNext()) {
+      assert(iter.current == elements[i++]);
+    }
+  });
+
+  test('test reversed', () {
+    Ringbuffer<String> ringbuffer = Ringbuffer(4);
+    var elements = ['first', 'second', 'third'];
+    var i = 0;
+    expect(ringbuffer.length, 0);
+    ringbuffer.add(elements[i++]);
+    expect(ringbuffer.length, 1);
+    ringbuffer.add(elements[i++]);
+    expect(ringbuffer.length, 2);
+    ringbuffer.add(elements[i++]);
+    expect(ringbuffer.length, 3);
+
+    for (var element in ringbuffer.reversed) {
+      assert(element == elements[--i]);
+    }
   });
 }

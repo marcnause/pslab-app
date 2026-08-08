@@ -1,7 +1,7 @@
 import 'dart:collection';
 import 'dart:math';
 
-class Ringbuffer<T> with ListMixin<T?> {
+class Ringbuffer<T> with ListMixin<T> {
   late int _capacity;
   late List<T?> _buffer;
 
@@ -27,19 +27,19 @@ class Ringbuffer<T> with ListMixin<T?> {
   }
 
   @override
-  void add(T? element) {
+  void add(T element) {
     _index = (_index + 1) % _capacity;
     _buffer[_index] = element;
     _length = min(_length + 1, _capacity);
   }
 
   @override
-  T? operator [](int index) {
+  T operator [](int index) {
     if (_index < 0 || index >= length) {
       throw RangeError.index(index, _buffer);
     }
 
-    return _buffer[index];
+    return _buffer[index]!;
   }
 
   @override
@@ -52,5 +52,14 @@ class Ringbuffer<T> with ListMixin<T?> {
   void operator []=(int index, T? value) {
     throw UnsupportedError(
         'Direct write access with index is not permitted, use add(T element)');
+  }
+
+  @override
+  Iterator<T> get iterator {
+    List<T> out = [];
+    for (int i = 0; i < _length; i++) {
+      out.add(this[i]);
+    }
+    return out.iterator;
   }
 }
