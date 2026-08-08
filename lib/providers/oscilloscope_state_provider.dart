@@ -10,6 +10,7 @@ import 'package:intl/intl.dart';
 import 'package:pslab/models/oscilloscope_measurements.dart';
 import 'package:pslab/others/logger_service.dart';
 import 'package:pslab/others/oscilloscope_axes_scale.dart';
+import 'package:pslab/others/ringbuffer.dart';
 import 'package:pslab/providers/locator.dart';
 import 'package:pslab/providers/oscilloscope_config_provider.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
@@ -150,7 +151,7 @@ class OscilloscopeStateProvider extends ChangeNotifier {
   late String xyPlotAxis1;
   late String xyPlotAxis2;
   late List<List<FlSpot>> dataEntries;
-  final List<List<List<FlSpot>>> _waveformBuffer = [];
+  late Ringbuffer<List<List<FlSpot>>> _waveformBuffer;
   late List<List<FlSpot>> dataEntriesXYPlot;
   late List<List<FlSpot>> dataEntriesCurveFit;
   late List<String> dataParamsChannels;
@@ -251,6 +252,7 @@ class OscilloscopeStateProvider extends ChangeNotifier {
   void setConfigProvider(
       OscilloscopeConfigProvider oscilloscopeConfigProvider) {
     _configProvider = oscilloscopeConfigProvider;
+    _waveformBuffer = Ringbuffer(_configProvider.config.bufferSize);
   }
 
   void setChannelSelected(String channel, bool selected) {
@@ -783,14 +785,8 @@ class OscilloscopeStateProvider extends ChangeNotifier {
 
       if (_configProvider.config.bufferOverlayEnabled &&
           dataEntries.isNotEmpty) {
-        _waveformBuffer.insert(
-          0,
-          dataEntries.map((spots) => List<FlSpot>.from(spots)).toList(),
-        );
-        final maxSize = _configProvider.config.bufferSize;
-        if (_waveformBuffer.length > maxSize) {
-          _waveformBuffer.removeRange(maxSize, _waveformBuffer.length);
-        }
+        _waveformBuffer
+            .add(dataEntries.map((spots) => List<FlSpot>.from(spots)).toList());
       } else {
         _waveformBuffer.clear();
       }
@@ -1282,15 +1278,19 @@ class OscilloscopeStateProvider extends ChangeNotifier {
     List<LineChartBarData> plots = [];
 
     if (_configProvider.config.bufferOverlayEnabled) {
-      for (int b = 0; b < _waveformBuffer.length; b++) {
-        final age = b + 1;
+      var age = 0;
+      /* The oldest elements have the highest index in the ringbuffer. We want
+      to draw the oldest element first. Thats why we traverse the elements in 
+      reversed order. */
+      for (var element in _waveformBuffer.reversed) {
+        age++;
         final opacity =
             (1.0 - (age / (_waveformBuffer.length + 1))).clamp(0.1, 0.6);
         plots.addAll(
           List<LineChartBarData>.generate(
-            _waveformBuffer[b].length,
+            element.length,
             (index) => LineChartBarData(
-              spots: _waveformBuffer[b][index],
+              spots: element[index],
               isCurved: true,
               color: colors[index % colors.length].withValues(alpha: opacity),
               barWidth: 1,
