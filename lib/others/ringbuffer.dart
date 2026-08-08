@@ -39,6 +39,10 @@ class Ringbuffer<T> with ListMixin<T> {
       throw RangeError.index(index, _buffer);
     }
 
+    if (_buffer[index] == null) {
+      throw RangeError.index(index, _buffer);
+    }
+
     return _buffer[index]!;
   }
 
@@ -52,6 +56,16 @@ class Ringbuffer<T> with ListMixin<T> {
   void operator []=(int index, T? value) {
     throw UnsupportedError(
         'Direct write access with index is not permitted, use add(T element)');
+  }
+
+  @override
+  void insert(int index, T element) {
+    throw UnsupportedError('Inserting element not supported.');
+  }
+
+  @override
+  void insertAll(int index, Iterable<T> iterable) {
+    throw UnsupportedError('Inserting elements not supported.');
   }
 
   @override

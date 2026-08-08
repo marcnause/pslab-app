@@ -72,6 +72,21 @@ void main() {
     expect(() => ringbuffer[0], throwsRangeError);
   });
 
+  test('test insert', () {
+    Ringbuffer<String> ringbuffer = Ringbuffer(2);
+    expect(() => ringbuffer.insert(0, 'first'), throwsUnsupportedError);
+    expect(ringbuffer.length, 0);
+    expect(() => ringbuffer[0], throwsRangeError);
+  });
+
+  test('test insertAll', () {
+    Ringbuffer<String> ringbuffer = Ringbuffer(2);
+    expect(() => ringbuffer.insertAll(0, ['first', 'second']),
+        throwsUnsupportedError);
+    expect(ringbuffer.length, 0);
+    expect(() => ringbuffer[0], throwsRangeError);
+  });
+
   test('test iterator', () {
     Ringbuffer<String> ringbuffer = Ringbuffer(4);
     var elements = ['first', 'second', 'third'];
@@ -105,6 +120,24 @@ void main() {
 
     for (var element in ringbuffer.reversed) {
       assert(element == elements[--i]);
+    }
+  });
+
+  test('test iterable', () {
+    Ringbuffer<String> ringbuffer = Ringbuffer(4);
+    var elements = ['first', 'second', 'third'];
+    var i = 0;
+    expect(ringbuffer.length, 0);
+    ringbuffer.add(elements[i++]);
+    expect(ringbuffer.length, 1);
+    ringbuffer.add(elements[i++]);
+    expect(ringbuffer.length, 2);
+    ringbuffer.add(elements[i++]);
+    expect(ringbuffer.length, 3);
+
+    i = 0;
+    for (var element in ringbuffer) {
+      assert(element == elements[i++]);
     }
   });
 }
