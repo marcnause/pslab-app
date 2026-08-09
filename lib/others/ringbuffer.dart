@@ -48,7 +48,7 @@ class Ringbuffer<T> with ListMixin<T> {
 
   @override
   void clear() {
-    _index = 0;
+    _index = -1;
     _length = 0;
   }
 
