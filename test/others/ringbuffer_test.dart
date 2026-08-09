@@ -3,10 +3,10 @@ import 'package:pslab/others/ringbuffer.dart';
 
 void main() {
   group('create ringbuffer and fill it', () {
-    late Ringbuffer<String> ringbuffer;
+    late RingBuffer<String> ringbuffer;
 
     test('create ringbuffer', () {
-      ringbuffer = Ringbuffer(3);
+      ringbuffer = RingBuffer(3);
       expect(ringbuffer.length, 0);
     });
 
@@ -41,11 +41,11 @@ void main() {
   });
 
   test('create ringbuffer with illegal index', () {
-    expect(() => Ringbuffer<String>(0), throwsArgumentError);
+    expect(() => RingBuffer<String>(0), throwsArgumentError);
   });
 
   test('access nonexistant field', () {
-    Ringbuffer<String> ringbuffer = Ringbuffer(2);
+    RingBuffer<String> ringbuffer = RingBuffer(2);
     expect(ringbuffer.length, 0);
     expect(() => ringbuffer[-1], throwsRangeError);
     expect(() => ringbuffer[0], throwsRangeError);
@@ -55,7 +55,7 @@ void main() {
   });
 
   test('fill and clear', () {
-    Ringbuffer<String> ringbuffer = Ringbuffer(2);
+    RingBuffer<String> ringbuffer = RingBuffer(2);
     expect(ringbuffer.length, 0);
     ringbuffer.add('first');
     expect(ringbuffer.length, 1);
@@ -66,21 +66,21 @@ void main() {
   });
 
   test('write with index', () {
-    Ringbuffer<String> ringbuffer = Ringbuffer(2);
+    RingBuffer<String> ringbuffer = RingBuffer(2);
     expect(() => ringbuffer[0] = 'first', throwsUnsupportedError);
     expect(ringbuffer.length, 0);
     expect(() => ringbuffer[0], throwsRangeError);
   });
 
   test('test insert', () {
-    Ringbuffer<String> ringbuffer = Ringbuffer(2);
+    RingBuffer<String> ringbuffer = RingBuffer(2);
     expect(() => ringbuffer.insert(0, 'first'), throwsUnsupportedError);
     expect(ringbuffer.length, 0);
     expect(() => ringbuffer[0], throwsRangeError);
   });
 
   test('test insertAll', () {
-    Ringbuffer<String> ringbuffer = Ringbuffer(2);
+    RingBuffer<String> ringbuffer = RingBuffer(2);
     expect(() => ringbuffer.insertAll(0, ['first', 'second']),
         throwsUnsupportedError);
     expect(ringbuffer.length, 0);
@@ -88,7 +88,7 @@ void main() {
   });
 
   test('test iterator', () {
-    Ringbuffer<String> ringbuffer = Ringbuffer(4);
+    RingBuffer<String> ringbuffer = RingBuffer(4);
     var elements = ['first', 'second', 'third'];
     var i = 0;
     expect(ringbuffer.length, 0);
@@ -107,7 +107,7 @@ void main() {
   });
 
   test('test reversed', () {
-    Ringbuffer<String> ringbuffer = Ringbuffer(4);
+    RingBuffer<String> ringbuffer = RingBuffer(4);
     var elements = ['first', 'second', 'third'];
     var i = 0;
     expect(ringbuffer.length, 0);
@@ -124,7 +124,7 @@ void main() {
   });
 
   test('test iterable', () {
-    Ringbuffer<String> ringbuffer = Ringbuffer(4);
+    RingBuffer<String> ringbuffer = RingBuffer(4);
     var elements = ['first', 'second', 'third'];
     var i = 0;
     expect(ringbuffer.length, 0);

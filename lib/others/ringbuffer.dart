@@ -1,14 +1,14 @@
 import 'dart:collection';
 import 'dart:math';
 
-class Ringbuffer<T> with ListMixin<T> {
+class RingBuffer<T> with ListMixin<T> {
   late int _capacity;
   late List<T?> _buffer;
 
   late int _length;
   int _index = -1;
 
-  Ringbuffer(int capacity) {
+  RingBuffer(int capacity) {
     if (capacity <= 0) {
       throw ArgumentError("Capacity must be a positive number.");
     }

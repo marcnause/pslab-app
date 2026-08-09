@@ -151,7 +151,7 @@ class OscilloscopeStateProvider extends ChangeNotifier {
   late String xyPlotAxis1;
   late String xyPlotAxis2;
   late List<List<FlSpot>> dataEntries;
-  late Ringbuffer<List<List<FlSpot>>> _waveformBuffer;
+  late RingBuffer<List<List<FlSpot>>> _waveformBuffer;
   late List<List<FlSpot>> dataEntriesXYPlot;
   late List<List<FlSpot>> dataEntriesCurveFit;
   late List<String> dataParamsChannels;
@@ -252,7 +252,7 @@ class OscilloscopeStateProvider extends ChangeNotifier {
   void setConfigProvider(
       OscilloscopeConfigProvider oscilloscopeConfigProvider) {
     _configProvider = oscilloscopeConfigProvider;
-    _waveformBuffer = Ringbuffer(_configProvider.config.bufferSize);
+    _waveformBuffer = RingBuffer(_configProvider.config.bufferSize);
   }
 
   void setChannelSelected(String channel, bool selected) {
