@@ -1225,6 +1225,7 @@ class OscilloscopeStateProvider extends ChangeNotifier {
       timebase = xAxisScale * 1000.0;
       oscilloscopeAxesScale.setXAxisScale(timebase);
       oscilloscopeAxesScale.setYAxisScale(yAxisScale);
+      _waveformBuffer.clear();
       notifyListeners();
       return true;
     } else {
@@ -1280,13 +1281,14 @@ class OscilloscopeStateProvider extends ChangeNotifier {
     if (_configProvider.config.bufferOverlayEnabled) {
       var age = 0;
       /* The oldest elements have the highest index in the ringbuffer. We want
-      to draw the oldest element first. Thats why we traverse the elements in 
+      to draw the oldest element first. That's why we traverse the elements in
       reversed order. */
       for (var element in _waveformBuffer.reversed) {
         age++;
         final opacity =
             (1.0 - (age / (_waveformBuffer.length + 1))).clamp(0.1, 0.6);
         plots.addAll(
+          // TODO: We draw old channel data even if channel is disabled.
           List<LineChartBarData>.generate(
             element.length,
             (index) => LineChartBarData(
