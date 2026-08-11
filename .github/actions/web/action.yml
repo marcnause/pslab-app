@@ -18,12 +18,38 @@ runs:
       with:
         cache: true
         flutter-version-file: pubspec.yaml
+
+    - name: Install System Dependencies
+      shell: bash
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y pkg-config libudev-dev libusb-1.0-0-dev
+
+    - name: Install wasm-pack
+      uses: jetli/wasm-pack-action@v0.4.0
+      with:
+        version: 'latest'
+    
+    - name: Add WebAssembly to Rust
+      shell: bash
+      run: |
+        rustup target add wasm32-unknown-unknown
+        rustup toolchain install nightly
+        rustup component add rust-src --toolchain nightly
+        cargo install cargo-expand
+        cargo install flutter_rust_bridge_codegen
+
+    - name: Compile Rust for Web
+      shell: bash
+      run: |
+        flutter_rust_bridge_codegen generate
+        flutter_rust_bridge_codegen build-web
     
     - name: Build Web App
       shell: bash
       run: |
         flutter config --enable-web
-        flutter build web --build-name ${{ inputs.VERSION_NAME }} --build-number ${{ inputs.VERSION_CODE }}
+        flutter build web --wasm --build-name ${{ inputs.VERSION_NAME }} --build-number ${{ inputs.VERSION_CODE }}
     
     - name: Create Web Archive
       shell: bash
