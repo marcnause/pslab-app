@@ -7,10 +7,7 @@ import 'base.dart';
 
 class WifiCommsHandler implements CommunicationHandler {
   String host;
-  final int tcpPort = 80;
   final int wsPort = 81;
-
-  bool useWebSockets = true;
 
   @override
   bool connected = false;
@@ -28,12 +25,11 @@ class WifiCommsHandler implements CommunicationHandler {
   }
 
   @override
-  Future<void> open() async {
-    int targetPort = useWebSockets ? wsPort : tcpPort;
-    logger.d("Connecting to $host on port $targetPort...");
+  Future<void> open({int overrideBaud = 1000000}) async {
+    logger.d("Connecting to $host on port $wsPort...");
 
     if (kIsWeb) {
-      final wsUrl = Uri.parse('ws' '://$host:$targetPort');
+      final wsUrl = Uri.parse('ws' '://$host:$wsPort');
 
       try {
         rust_api.readWebData(bytesToRead: 999999);
@@ -68,11 +64,11 @@ class WifiCommsHandler implements CommunicationHandler {
       }
     } else {
       try {
-        rust_api.wifiConnect(host: host, port: targetPort, useWebsocket: false);
+        await rust_api.wifiConnect(host: host, port: wsPort);
         connected = true;
-        logger.i("Connected via raw TCP");
+        logger.i("Connected via WebSockets");
       } catch (e) {
-        logger.e("Failed to setup TCP connection: $e");
+        logger.e("Failed to setup WebSocket connection: $e");
         connected = false;
       }
     }
