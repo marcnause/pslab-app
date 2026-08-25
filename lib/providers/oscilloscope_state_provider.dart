@@ -255,6 +255,8 @@ class OscilloscopeStateProvider extends ChangeNotifier {
     _waveformBuffer = RingBuffer(_configProvider.config.bufferSize);
   }
 
+  bool isBufferOverlayEnabled() => _configProvider.config.bufferOverlayEnabled;
+
   void setChannelSelected(String channel, bool selected) {
     switch (channel) {
       case 'CH1':
@@ -783,8 +785,7 @@ class OscilloscopeStateProvider extends ChangeNotifier {
         }
       }
 
-      if (_configProvider.config.bufferOverlayEnabled &&
-          dataEntries.isNotEmpty) {
+      if (isBufferOverlayEnabled() && dataEntries.isNotEmpty) {
         _waveformBuffer
             .add(dataEntries.map((spots) => List<FlSpot>.from(spots)).toList());
       } else {
@@ -1295,7 +1296,7 @@ class OscilloscopeStateProvider extends ChangeNotifier {
     List<Color> curveFitColors = [Colors.yellow];
     List<LineChartBarData> plots = [];
 
-    if (_configProvider.config.bufferOverlayEnabled) {
+    if (isBufferOverlayEnabled()) {
       var age = 0;
       /* The oldest elements have the highest index in the ringbuffer. We want
       to draw the oldest element first. That's why we traverse the elements in
@@ -1306,15 +1307,15 @@ class OscilloscopeStateProvider extends ChangeNotifier {
             (1.0 - (age / (_waveformBuffer.length + 1))).clamp(0.1, 0.6);
         plots.addAll(
           // TODO: We draw old channel data even if channel is disabled.
+          // TODO: Each line adds value to indicator popup. :-\
           List<LineChartBarData>.generate(
             element.length,
             (index) => LineChartBarData(
-              spots: element[index],
-              isCurved: true,
-              color: colors[index % colors.length].withValues(alpha: opacity),
-              barWidth: 1,
-              dotData: const FlDotData(show: false),
-            ),
+                spots: element[index],
+                isCurved: true,
+                color: colors[index % colors.length].withValues(alpha: opacity),
+                barWidth: 1,
+                dotData: const FlDotData(show: false)),
           ),
         );
       }

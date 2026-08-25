@@ -97,6 +97,9 @@ class _OscilloscopeGraphState extends State<OscilloscopeGraph> {
               backgroundColor: chartBackgroundColor,
               lineTouchData: LineTouchData(
                 enabled: !provider.isPlayingBack,
+                /* Removes popups with values in overlay mode because otherwise 
+                we would see data of all lines, even old ones, which would be confusing. */
+                handleBuiltInTouches: !provider.isBufferOverlayEnabled(),
               ),
               titlesData: FlTitlesData(
                 show: true,
