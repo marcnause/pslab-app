@@ -132,7 +132,7 @@ class _ChannelParametersState extends State<ChannelParametersWidget> {
                 left: 8,
                 child: _buildChannelRow(
                   appLocalizations.ch1,
-                  oscilloscopeStateProvider.isCH1Selected,
+                  oscilloscopeStateProvider.isSelected('CH1'),
                   (value) => setState(() => oscilloscopeStateProvider
                       .setChannelSelected('CH1', value ?? false)),
                   '+/- 16V',
@@ -143,7 +143,7 @@ class _ChannelParametersState extends State<ChannelParametersWidget> {
                 left: 8,
                 child: _buildChannelRow(
                   appLocalizations.ch2,
-                  oscilloscopeStateProvider.isCH2Selected,
+                  oscilloscopeStateProvider.isSelected('CH2'),
                   (value) => setState(() => oscilloscopeStateProvider
                       .setChannelSelected('CH2', value ?? false)),
                   '+/- 16V',
@@ -154,7 +154,7 @@ class _ChannelParametersState extends State<ChannelParametersWidget> {
                 left: 165,
                 child: _buildChannelRow(
                   "CH3",
-                  oscilloscopeStateProvider.isCH3Selected,
+                  oscilloscopeStateProvider.isSelected('CH3'),
                   (value) => setState(() => oscilloscopeStateProvider
                       .setChannelSelected('CH3', value ?? false)),
                   '+/- 3.3V',
@@ -280,25 +280,28 @@ class _ChannelParametersState extends State<ChannelParametersWidget> {
                                 true;
                             oscilloscopeStateProvider.isBuiltInMICSelected =
                                 true;
-                            oscilloscopeStateProvider.isMICSelected = false;
+                            oscilloscopeStateProvider.setChannelSelected(
+                                'MIC', false);
                           }
                         });
                       },
                     ),
                     _buildMicRadio(
                       appLocalizations.pslabMic,
-                      oscilloscopeStateProvider.isMICSelected,
+                      oscilloscopeStateProvider.isSelected('MIC'),
                       (value) {
                         setState(() {
                           if (value == null || !value) {
-                            oscilloscopeStateProvider.isMICSelected = false;
+                            oscilloscopeStateProvider.setChannelSelected(
+                                'MIC', false);
                             oscilloscopeStateProvider.isAudioInputSelected =
                                 false;
                             oscilloscopeStateProvider.removeChannelData('MIC');
                           } else {
                             oscilloscopeStateProvider.isAudioInputSelected =
                                 true;
-                            oscilloscopeStateProvider.isMICSelected = true;
+                            oscilloscopeStateProvider.setChannelSelected(
+                                'MIC', true);
                             oscilloscopeStateProvider.isBuiltInMICSelected =
                                 false;
                           }

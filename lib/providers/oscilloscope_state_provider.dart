@@ -59,10 +59,7 @@ class OscilloscopeStateProvider extends ChangeNotifier {
   late double timeGap;
   late double timebase;
   double maxTimebase = 102.4;
-  late bool isCH1Selected;
-  late bool isCH2Selected;
-  late bool isCH3Selected;
-  late bool isMICSelected;
+  final Set<String> _selectedChannels = {};
   late bool isBuiltInMICSelected;
   late bool isAudioInputSelected;
   late bool isTriggerSelected;
@@ -185,10 +182,6 @@ class OscilloscopeStateProvider extends ChangeNotifier {
     _selectedIndex = 0;
     selectedChannelOffset = 'CH1';
 
-    isCH1Selected = false;
-    isCH2Selected = false;
-    isCH3Selected = false;
-    isMICSelected = false;
     isBuiltInMICSelected = false;
     isAudioInputSelected = false;
     isTriggerSelected = false;
@@ -258,26 +251,19 @@ class OscilloscopeStateProvider extends ChangeNotifier {
   bool isBufferOverlayEnabled() => _configProvider.config.bufferOverlayEnabled;
 
   void setChannelSelected(String channel, bool selected) {
-    switch (channel) {
-      case 'CH1':
-        isCH1Selected = selected;
-        break;
-      case 'CH2':
-        isCH2Selected = selected;
-        break;
-      case 'CH3':
-        isCH3Selected = selected;
-        break;
-      case 'MIC':
-        isMICSelected = selected;
-        break;
-      default:
-        return;
+    if (selected) {
+      _selectedChannels.add(channel);
+    } else {
+      _selectedChannels.remove(channel);
     }
     if (!selected) {
       _removeChannelData(channel);
     }
     notifyListeners();
+  }
+
+  bool isSelected(String channel) {
+    return _selectedChannels.contains(channel);
   }
 
   void removeChannelData(String channel) {
@@ -370,18 +356,18 @@ class OscilloscopeStateProvider extends ChangeNotifier {
             }
           } else {
             if (_scienceLab.isConnected()) {
-              if (isCH1Selected) {
+              if (isSelected('CH1')) {
                 channels.add('CH1');
               }
-              if (isCH2Selected) {
+              if (isSelected('CH2')) {
                 channels.add('CH2');
               }
-              if (isCH3Selected) {
+              if (isSelected('CH3')) {
                 channels.add('CH3');
               }
             }
             if (isAudioInputSelected && isBuiltInMICSelected ||
-                (_scienceLab.isConnected() && isMICSelected)) {
+                (_scienceLab.isConnected() && isSelected('MIC'))) {
               channels.add('MIC');
             }
             if (channels.isNotEmpty) {
@@ -1102,10 +1088,10 @@ class OscilloscopeStateProvider extends ChangeNotifier {
     ];
     if (channels.isEmpty) {
       channels.addAll([
-        if (isCH1Selected) 'CH1',
-        if (isCH2Selected) 'CH2',
-        if (isCH3Selected) 'CH3',
-        if (isMICSelected || isBuiltInMICSelected) 'MIC',
+        if (isSelected('CH1')) 'CH1',
+        if (isSelected('CH2')) 'CH2',
+        if (isSelected('CH3')) 'CH3',
+        if (isSelected('MIC') || isBuiltInMICSelected) 'MIC',
       ]);
     }
     final frameCount = _recordedData.isNotEmpty ? _recordedData.length - 1 : 0;
@@ -1248,10 +1234,12 @@ class OscilloscopeStateProvider extends ChangeNotifier {
       }
       return names;
     }
-    if (isCH1Selected) names.add('CH1');
-    if (isCH2Selected) names.add('CH2');
-    if (isCH3Selected) names.add('CH3');
-    if (isMICSelected || isBuiltInMICSelected) names.add('MIC');
+    if (isSelected('CH1')) names.add('CH1');
+    if (isSelected('CH2')) names.add('CH2');
+    if (isSelected('CH3')) names.add('CH3');
+    if (isSelected('MIC') || isBuiltInMICSelected) {
+      names.add('MIC');
+    }
     if (names.isEmpty) names.add('CH1');
     return names;
   }

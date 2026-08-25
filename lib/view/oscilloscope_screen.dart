@@ -519,10 +519,10 @@ class _OscilloscopeScreenState extends State<OscilloscopeScreen> {
                       message: appLocalizations.autoScale,
                       child: TextButton(
                         onPressed: () {
-                          if ((((provider.isCH1Selected ||
-                                          provider.isCH2Selected ||
-                                          provider.isCH3Selected ||
-                                          provider.isMICSelected) &&
+                          if ((((provider.isSelected('CH1') ||
+                                          provider.isSelected('CH2') ||
+                                          provider.isSelected('CH3') ||
+                                          provider.isSelected('MIC')) &&
                                       getIt<ScienceLab>().isConnected()) ||
                                   provider.isBuiltInMICSelected) &&
                               !provider.autoScale()) {
