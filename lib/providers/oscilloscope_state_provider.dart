@@ -262,7 +262,7 @@ class OscilloscopeStateProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  bool isSelected(String channel) {
+  bool isChannelSelected(String channel) {
     return _selectedChannels.contains(channel);
   }
 
@@ -356,18 +356,18 @@ class OscilloscopeStateProvider extends ChangeNotifier {
             }
           } else {
             if (_scienceLab.isConnected()) {
-              if (isSelected('CH1')) {
+              if (isChannelSelected('CH1')) {
                 channels.add('CH1');
               }
-              if (isSelected('CH2')) {
+              if (isChannelSelected('CH2')) {
                 channels.add('CH2');
               }
-              if (isSelected('CH3')) {
+              if (isChannelSelected('CH3')) {
                 channels.add('CH3');
               }
             }
             if (isAudioInputSelected && isBuiltInMICSelected ||
-                (_scienceLab.isConnected() && isSelected('MIC'))) {
+                (_scienceLab.isConnected() && isChannelSelected('MIC'))) {
               channels.add('MIC');
             }
             if (channels.isNotEmpty) {
@@ -1088,10 +1088,10 @@ class OscilloscopeStateProvider extends ChangeNotifier {
     ];
     if (channels.isEmpty) {
       channels.addAll([
-        if (isSelected('CH1')) 'CH1',
-        if (isSelected('CH2')) 'CH2',
-        if (isSelected('CH3')) 'CH3',
-        if (isSelected('MIC') || isBuiltInMICSelected) 'MIC',
+        if (isChannelSelected('CH1')) 'CH1',
+        if (isChannelSelected('CH2')) 'CH2',
+        if (isChannelSelected('CH3')) 'CH3',
+        if (isChannelSelected('MIC') || isBuiltInMICSelected) 'MIC',
       ]);
     }
     final frameCount = _recordedData.isNotEmpty ? _recordedData.length - 1 : 0;
@@ -1234,10 +1234,10 @@ class OscilloscopeStateProvider extends ChangeNotifier {
       }
       return names;
     }
-    if (isSelected('CH1')) names.add('CH1');
-    if (isSelected('CH2')) names.add('CH2');
-    if (isSelected('CH3')) names.add('CH3');
-    if (isSelected('MIC') || isBuiltInMICSelected) {
+    if (isChannelSelected('CH1')) names.add('CH1');
+    if (isChannelSelected('CH2')) names.add('CH2');
+    if (isChannelSelected('CH3')) names.add('CH3');
+    if (isChannelSelected('MIC') || isBuiltInMICSelected) {
       names.add('MIC');
     }
     if (names.isEmpty) names.add('CH1');

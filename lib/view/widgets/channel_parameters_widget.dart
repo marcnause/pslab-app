@@ -132,7 +132,7 @@ class _ChannelParametersState extends State<ChannelParametersWidget> {
                 left: 8,
                 child: _buildChannelRow(
                   appLocalizations.ch1,
-                  oscilloscopeStateProvider.isSelected('CH1'),
+                  oscilloscopeStateProvider.isChannelSelected('CH1'),
                   (value) => setState(() => oscilloscopeStateProvider
                       .setChannelSelected('CH1', value ?? false)),
                   '+/- 16V',
@@ -143,7 +143,7 @@ class _ChannelParametersState extends State<ChannelParametersWidget> {
                 left: 8,
                 child: _buildChannelRow(
                   appLocalizations.ch2,
-                  oscilloscopeStateProvider.isSelected('CH2'),
+                  oscilloscopeStateProvider.isChannelSelected('CH2'),
                   (value) => setState(() => oscilloscopeStateProvider
                       .setChannelSelected('CH2', value ?? false)),
                   '+/- 16V',
@@ -154,7 +154,7 @@ class _ChannelParametersState extends State<ChannelParametersWidget> {
                 left: 165,
                 child: _buildChannelRow(
                   "CH3",
-                  oscilloscopeStateProvider.isSelected('CH3'),
+                  oscilloscopeStateProvider.isChannelSelected('CH3'),
                   (value) => setState(() => oscilloscopeStateProvider
                       .setChannelSelected('CH3', value ?? false)),
                   '+/- 3.3V',
@@ -288,7 +288,7 @@ class _ChannelParametersState extends State<ChannelParametersWidget> {
                     ),
                     _buildMicRadio(
                       appLocalizations.pslabMic,
-                      oscilloscopeStateProvider.isSelected('MIC'),
+                      oscilloscopeStateProvider.isChannelSelected('MIC'),
                       (value) {
                         setState(() {
                           if (value == null || !value) {
