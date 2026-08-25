@@ -1295,7 +1295,6 @@ class OscilloscopeStateProvider extends ChangeNotifier {
             (1.0 - (age / (_waveformBuffer.length + 1))).clamp(0.1, 0.6);
         plots.addAll(
           // TODO: We draw old channel data even if channel is disabled.
-          // TODO: Each line adds value to indicator popup. :-\
           List<LineChartBarData>.generate(
             element.length,
             (index) => LineChartBarData(
