@@ -1259,7 +1259,7 @@ class OscilloscopeStateProvider extends ChangeNotifier {
   List<LineChartBarData> createPlotForChannel(String channelName) {
     final index = dataParamsChannels.indexOf(channelName);
     final plots = <LineChartBarData>[];
-    if (_configProvider.config.bufferOverlayEnabled && index >= 0) {
+    if (isBufferOverlayEnabled() && index >= 0) {
       for (int b = 0; b < _waveformBuffer.length; b++) {
         if (index >= _waveformBuffer[b].length) continue;
         final age = b + 1;
