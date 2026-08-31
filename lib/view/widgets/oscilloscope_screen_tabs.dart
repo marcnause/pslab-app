@@ -138,49 +138,56 @@ class _OscilloscopeTabsState extends State<OscilloscopeScreenTabs> {
           Expanded(
             child: MouseRegion(
               cursor: SystemMouseCursors.click,
-              child: GestureDetector(
+              child: Semantics(
+                button: true,
+                excludeSemantics: true,
+                selected: oscilloscopeStateProvider.selectedIndex == 0,
+                label: appLocalizations.channels,
                 onTap: () => _selectTab(oscilloscopeStateProvider, 0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Expanded(
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 4, horizontal: 8),
-                        decoration: BoxDecoration(
-                          color: oscilloscopeTabInnerBoxColor,
-                          borderRadius: BorderRadius.circular(2),
-                          border: _tabBorder(oscilloscopeStateProvider, 0),
-                        ),
-                        margin: const EdgeInsets.all(4),
-                        child: Image.asset(
-                          widget.channelParametersImage,
-                        ),
-                      ),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.symmetric(
-                          vertical: 4, horizontal: 2),
-                      color: oscilloscopeStateProvider.selectedIndex == 0
-                          ? oscilloscopeOptionTitleColor
-                          : Colors.transparent,
-                      child: Text(
-                        appLocalizations.channels,
-                        textAlign: TextAlign.center,
-                        maxLines: 1,
-                        style: TextStyle(
-                          color: oscilloscopeOptionLabelColor,
-                          fontSize: 9.5,
-                          fontStyle: FontStyle.normal,
-                          fontWeight: FontWeight.bold,
+                child: GestureDetector(
+                  onTap: () => _selectTab(oscilloscopeStateProvider, 0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Expanded(
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 4, horizontal: 8),
+                          decoration: BoxDecoration(
+                            color: oscilloscopeTabInnerBoxColor,
+                            borderRadius: BorderRadius.circular(2),
+                            border: _tabBorder(oscilloscopeStateProvider, 0),
+                          ),
+                          margin: const EdgeInsets.all(4),
+                          child: Image.asset(
+                            widget.channelParametersImage,
+                          ),
                         ),
                       ),
-                    ),
-                    Divider(
-                      color: oscilloscopeTabBorderColor,
-                      height: 2,
-                    )
-                  ],
+                      Container(
+                        margin: const EdgeInsets.symmetric(
+                            vertical: 4, horizontal: 2),
+                        color: oscilloscopeStateProvider.selectedIndex == 0
+                            ? oscilloscopeOptionTitleColor
+                            : Colors.transparent,
+                        child: Text(
+                          appLocalizations.channels,
+                          textAlign: TextAlign.center,
+                          maxLines: 1,
+                          style: TextStyle(
+                            color: oscilloscopeOptionLabelColor,
+                            fontSize: 9.5,
+                            fontStyle: FontStyle.normal,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      Divider(
+                        color: oscilloscopeTabBorderColor,
+                        height: 2,
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -188,48 +195,55 @@ class _OscilloscopeTabsState extends State<OscilloscopeScreenTabs> {
           Expanded(
             child: MouseRegion(
               cursor: SystemMouseCursors.click,
-              child: GestureDetector(
+              child: Semantics(
+                button: true,
+                excludeSemantics: true,
+                selected: oscilloscopeStateProvider.selectedIndex == 1,
+                label: appLocalizations.timeBase,
                 onTap: () => _selectTab(oscilloscopeStateProvider, 1),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Expanded(
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 4, horizontal: 8),
-                        decoration: BoxDecoration(
-                          color: oscilloscopeTabInnerBoxColor,
-                          borderRadius: BorderRadius.circular(2),
-                          border: _tabBorder(oscilloscopeStateProvider, 1),
-                        ),
-                        margin: const EdgeInsets.all(4),
-                        child: Image.asset(
-                          widget.timebaseTriggerImage,
+                child: GestureDetector(
+                  onTap: () => _selectTab(oscilloscopeStateProvider, 1),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Expanded(
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 4, horizontal: 8),
+                          decoration: BoxDecoration(
+                            color: oscilloscopeTabInnerBoxColor,
+                            borderRadius: BorderRadius.circular(2),
+                            border: _tabBorder(oscilloscopeStateProvider, 1),
+                          ),
+                          margin: const EdgeInsets.all(4),
+                          child: Image.asset(
+                            widget.timebaseTriggerImage,
+                          ),
                         ),
                       ),
-                    ),
-                    Container(
-                        margin: const EdgeInsets.symmetric(
-                            vertical: 4, horizontal: 2),
-                        color: oscilloscopeStateProvider.selectedIndex == 1
-                            ? oscilloscopeOptionTitleColor
-                            : Colors.transparent,
-                        child: Text(
-                          appLocalizations.timeBase,
-                          textAlign: TextAlign.center,
-                          maxLines: 1,
-                          style: TextStyle(
-                            color: oscilloscopeOptionLabelColor,
-                            fontSize: 9.5,
-                            fontStyle: FontStyle.normal,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        )),
-                    Divider(
-                      color: oscilloscopeTabBorderColor,
-                      height: 2,
-                    )
-                  ],
+                      Container(
+                          margin: const EdgeInsets.symmetric(
+                              vertical: 4, horizontal: 2),
+                          color: oscilloscopeStateProvider.selectedIndex == 1
+                              ? oscilloscopeOptionTitleColor
+                              : Colors.transparent,
+                          child: Text(
+                            appLocalizations.timeBase,
+                            textAlign: TextAlign.center,
+                            maxLines: 1,
+                            style: TextStyle(
+                              color: oscilloscopeOptionLabelColor,
+                              fontSize: 9.5,
+                              fontStyle: FontStyle.normal,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          )),
+                      Divider(
+                        color: oscilloscopeTabBorderColor,
+                        height: 2,
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -237,34 +251,96 @@ class _OscilloscopeTabsState extends State<OscilloscopeScreenTabs> {
           Expanded(
             child: MouseRegion(
               cursor: SystemMouseCursors.click,
-              child: GestureDetector(
+              child: Semantics(
+                button: true,
+                excludeSemantics: true,
+                selected: oscilloscopeStateProvider.selectedIndex == 2,
+                label: appLocalizations.dataAnalysis,
                 onTap: () => _selectTab(oscilloscopeStateProvider, 2),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Expanded(
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 4, horizontal: 8),
-                        decoration: BoxDecoration(
-                          color: oscilloscopeTabInnerBoxColor,
-                          borderRadius: BorderRadius.circular(2),
-                          border: _tabBorder(oscilloscopeStateProvider, 2),
-                        ),
-                        margin: const EdgeInsets.all(4),
-                        child: Image.asset(
-                          widget.dataAnalysisImage,
+                child: GestureDetector(
+                  onTap: () => _selectTab(oscilloscopeStateProvider, 2),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Expanded(
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 4, horizontal: 8),
+                          decoration: BoxDecoration(
+                            color: oscilloscopeTabInnerBoxColor,
+                            borderRadius: BorderRadius.circular(2),
+                            border: _tabBorder(oscilloscopeStateProvider, 2),
+                          ),
+                          margin: const EdgeInsets.all(4),
+                          child: Image.asset(
+                            widget.dataAnalysisImage,
+                          ),
                         ),
                       ),
-                    ),
-                    Container(
+                      Container(
+                          margin: const EdgeInsets.symmetric(
+                              vertical: 4, horizontal: 2),
+                          color: oscilloscopeStateProvider.selectedIndex == 2
+                              ? oscilloscopeOptionTitleColor
+                              : Colors.transparent,
+                          child: Text(
+                            appLocalizations.dataAnalysis,
+                            textAlign: TextAlign.center,
+                            maxLines: 1,
+                            style: TextStyle(
+                              color: oscilloscopeOptionLabelColor,
+                              fontSize: 9.5,
+                              fontStyle: FontStyle.normal,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          )),
+                      Divider(
+                        color: oscilloscopeTabBorderColor,
+                        height: 2,
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            child: MouseRegion(
+              cursor: SystemMouseCursors.click,
+              child: Semantics(
+                button: true,
+                excludeSemantics: true,
+                selected: oscilloscopeStateProvider.selectedIndex == 3,
+                label: appLocalizations.xyPlot,
+                onTap: () => _selectTab(oscilloscopeStateProvider, 3),
+                child: GestureDetector(
+                  onTap: () => _selectTab(oscilloscopeStateProvider, 3),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Expanded(
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 4, horizontal: 8),
+                          decoration: BoxDecoration(
+                            color: oscilloscopeTabInnerBoxColor,
+                            borderRadius: BorderRadius.circular(2),
+                            border: _tabBorder(oscilloscopeStateProvider, 3),
+                          ),
+                          margin: const EdgeInsets.all(4),
+                          child: Image.asset(
+                            widget.xyPlotImage,
+                          ),
+                        ),
+                      ),
+                      Container(
                         margin: const EdgeInsets.symmetric(
                             vertical: 4, horizontal: 2),
-                        color: oscilloscopeStateProvider.selectedIndex == 2
+                        color: oscilloscopeStateProvider.selectedIndex == 3
                             ? oscilloscopeOptionTitleColor
                             : Colors.transparent,
                         child: Text(
-                          appLocalizations.dataAnalysis,
+                          appLocalizations.xyPlot,
                           textAlign: TextAlign.center,
                           maxLines: 1,
                           style: TextStyle(
@@ -273,58 +349,10 @@ class _OscilloscopeTabsState extends State<OscilloscopeScreenTabs> {
                             fontStyle: FontStyle.normal,
                             fontWeight: FontWeight.bold,
                           ),
-                        )),
-                    Divider(
-                      color: oscilloscopeTabBorderColor,
-                      height: 2,
-                    )
-                  ],
-                ),
-              ),
-            ),
-          ),
-          Expanded(
-            child: MouseRegion(
-              cursor: SystemMouseCursors.click,
-              child: GestureDetector(
-                onTap: () => _selectTab(oscilloscopeStateProvider, 3),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Expanded(
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 4, horizontal: 8),
-                        decoration: BoxDecoration(
-                          color: oscilloscopeTabInnerBoxColor,
-                          borderRadius: BorderRadius.circular(2),
-                          border: _tabBorder(oscilloscopeStateProvider, 3),
-                        ),
-                        margin: const EdgeInsets.all(4),
-                        child: Image.asset(
-                          widget.xyPlotImage,
                         ),
                       ),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.symmetric(
-                          vertical: 4, horizontal: 2),
-                      color: oscilloscopeStateProvider.selectedIndex == 3
-                          ? oscilloscopeOptionTitleColor
-                          : Colors.transparent,
-                      child: Text(
-                        appLocalizations.xyPlot,
-                        textAlign: TextAlign.center,
-                        maxLines: 1,
-                        style: TextStyle(
-                          color: oscilloscopeOptionLabelColor,
-                          fontSize: 9.5,
-                          fontStyle: FontStyle.normal,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
