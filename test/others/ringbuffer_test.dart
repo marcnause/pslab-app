@@ -102,7 +102,7 @@ void main() {
     var iter = ringbuffer.iterator;
     i = 0;
     while (iter.moveNext()) {
-      assert(iter.current == elements[i++]);
+      expect(iter.current, elements[i++]);
     }
   });
 
@@ -119,8 +119,10 @@ void main() {
     expect(ringbuffer.length, 3);
 
     for (var element in ringbuffer.reversed) {
-      assert(element == elements[--i]);
+      expect(element, elements[--i]);
     }
+
+    expect(ringbuffer.reversed.length, 3);
   });
 
   test('test iterable', () {
@@ -137,7 +139,7 @@ void main() {
 
     i = 0;
     for (var element in ringbuffer) {
-      assert(element == elements[i++]);
+      expect(element, elements[i++]);
     }
   });
 }
