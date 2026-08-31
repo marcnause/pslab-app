@@ -194,9 +194,6 @@ class OscilloscopeStateProvider extends ChangeNotifier {
     isRunning = true;
     xyPlotAxis1 = 'CH1';
     xyPlotAxis2 = 'CH2';
-    dataEntries = [];
-    dataEntriesXYPlot = [];
-    dataEntriesCurveFit = [];
     _timebaseDivisions = 8;
     timebaseSlider = 0;
     oscillscopeRangeSelection = 0;
@@ -278,6 +275,7 @@ class OscilloscopeStateProvider extends ChangeNotifier {
     }
 
     dataParamsChannels.removeAt(index);
+
     if (index < dataEntries.length) {
       dataEntries.removeAt(index);
     }
@@ -1324,6 +1322,7 @@ class OscilloscopeStateProvider extends ChangeNotifier {
         },
       ),
     );
+
     plots.addAll(
       List<LineChartBarData>.generate(
         dataEntriesCurveFit.length,
@@ -1363,6 +1362,7 @@ class OscilloscopeStateProvider extends ChangeNotifier {
 
   void resetGraph() {
     if (dataEntries.isEmpty &&
+        _waveformBuffer.isEmpty &&
         dataEntriesXYPlot.isEmpty &&
         dataEntriesCurveFit.isEmpty &&
         dataParamsChannels.isEmpty) {
@@ -1372,6 +1372,7 @@ class OscilloscopeStateProvider extends ChangeNotifier {
     oscilloscopeAxesScale.setYAxisScaleMin(-oscilloscopeAxesScale.yAxisScale);
     oscilloscopeAxesScale.setXAxisScale(timebase);
     dataEntries = [];
+    _waveformBuffer.clear();
     dataEntriesXYPlot = [];
     dataEntriesCurveFit = [];
     dataParamsChannels = [];
