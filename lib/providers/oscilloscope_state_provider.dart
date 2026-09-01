@@ -148,7 +148,8 @@ class OscilloscopeStateProvider extends ChangeNotifier {
   late String xyPlotAxis1;
   late String xyPlotAxis2;
   late List<List<FlSpot>> dataEntries;
-  late RingBuffer<List<List<FlSpot>>> _waveformBuffer;
+  final Map<String, RingBuffer<List<FlSpot>>> _waveformBuffer =
+      <String, RingBuffer<List<FlSpot>>>{};
   late List<List<FlSpot>> dataEntriesXYPlot;
   late List<List<FlSpot>> dataEntriesCurveFit;
   late List<String> dataParamsChannels;
@@ -242,7 +243,6 @@ class OscilloscopeStateProvider extends ChangeNotifier {
   void setConfigProvider(
       OscilloscopeConfigProvider oscilloscopeConfigProvider) {
     _configProvider = oscilloscopeConfigProvider;
-    _waveformBuffer = RingBuffer(_configProvider.config.bufferSize);
   }
 
   bool isBufferOverlayEnabled() => _configProvider.config.bufferOverlayEnabled;
@@ -250,11 +250,12 @@ class OscilloscopeStateProvider extends ChangeNotifier {
   void setChannelSelected(String channel, bool selected) {
     if (selected) {
       _selectedChannels.add(channel);
+      _waveformBuffer.putIfAbsent(channel,
+          () => RingBuffer<List<FlSpot>>(_configProvider.config.bufferSize));
     } else {
       _selectedChannels.remove(channel);
-    }
-    if (!selected) {
       _removeChannelData(channel);
+      _waveformBuffer.remove(channel);
     }
     notifyListeners();
   }
@@ -353,6 +354,7 @@ class OscilloscopeStateProvider extends ChangeNotifier {
               _wakelockEnabled = true;
             }
           } else {
+            print(_selectedChannels);
             if (_scienceLab.isConnected()) {
               if (isChannelSelected('CH1')) {
                 channels.add('CH1');
@@ -442,6 +444,7 @@ class OscilloscopeStateProvider extends ChangeNotifier {
   }
 
   Future<void> captureTask(List<String> channels) async {
+    print('captureTask $channels');
     List<List<FlSpot>> entries = [];
     List<List<FlSpot>> curveFitEntries = [];
     int noOfChannels = channels.length;
@@ -769,11 +772,11 @@ class OscilloscopeStateProvider extends ChangeNotifier {
         }
       }
 
-      if (isBufferOverlayEnabled() && dataEntries.isNotEmpty) {
-        _waveformBuffer
-            .add(dataEntries.map((spots) => List<FlSpot>.from(spots)).toList());
-      } else {
-        _waveformBuffer.clear();
+      if (isBufferOverlayEnabled() &&
+          dataEntries.isNotEmpty &&
+          channel != null) {
+        _waveformBuffer[channel]
+            ?.add(dataEntries[dataParamsChannels.indexOf(channel)]);
       }
 
       dataEntries = List.from(entries);
@@ -1245,17 +1248,25 @@ class OscilloscopeStateProvider extends ChangeNotifier {
   List<LineChartBarData> createPlotForChannel(String channelName) {
     final index = dataParamsChannels.indexOf(channelName);
     final plots = <LineChartBarData>[];
-    if (isBufferOverlayEnabled() && index >= 0) {
-      for (int b = 0; b < _waveformBuffer.length; b++) {
-        if (index >= _waveformBuffer[b].length) continue;
-        final age = b + 1;
-        final opacity =
-            (1.0 - (age / (_waveformBuffer.length + 1))).clamp(0.1, 0.6);
+    if (isBufferOverlayEnabled() &&
+        isChannelSelected(channelName) &&
+        _waveformBuffer.containsKey(channelName)) {
+      final buff = _waveformBuffer[channelName];
+      if (buff == null) return plots;
+
+      final color = colors[index % colors.length];
+      var age = 0;
+      /* The oldest elements have the highest index in the ringbuffer. We want
+      to draw the oldest element first. That's why we traverse the elements in
+      reversed order. */
+      for (var element in buff.reversed) {
+        age++;
+        final opacity = (1.0 - (age / (buff.length + 1))).clamp(0.1, 0.6);
         plots.add(
           LineChartBarData(
-            spots: _waveformBuffer[b][index],
+            spots: element,
             isCurved: true,
-            color: colors[index % colors.length].withValues(alpha: opacity),
+            color: color.withValues(alpha: opacity),
             barWidth: 1,
             dotData: const FlDotData(show: false),
           ),
@@ -1282,27 +1293,36 @@ class OscilloscopeStateProvider extends ChangeNotifier {
     List<Color> curveFitColors = [Colors.yellow];
     List<LineChartBarData> plots = [];
 
+    print("createPlots");
+
     if (isBufferOverlayEnabled()) {
-      var age = 0;
-      /* The oldest elements have the highest index in the ringbuffer. We want
-      to draw the oldest element first. That's why we traverse the elements in
-      reversed order. */
-      for (var element in _waveformBuffer.reversed) {
-        age++;
-        final opacity =
-            (1.0 - (age / (_waveformBuffer.length + 1))).clamp(0.1, 0.6);
-        plots.addAll(
-          // TODO: We draw old channel data even if channel is disabled.
-          List<LineChartBarData>.generate(
-            element.length,
-            (index) => LineChartBarData(
-                spots: element[index],
+      for (var channelName in _selectedChannels) {
+        print(channelName);
+        if (isChannelSelected(channelName) &&
+            _waveformBuffer.containsKey(channelName)) {
+          final buff = _waveformBuffer[channelName];
+          if (buff == null) continue;
+
+          final index = dataParamsChannels.indexOf(channelName);
+          final color = colors[index % colors.length];
+          var age = 0;
+          /* The oldest elements have the highest index in the ringbuffer. We want
+        to draw the oldest element first. That's why we traverse the elements in
+        reversed order. */
+          for (var element in buff.reversed) {
+            age++;
+            final opacity = (1.0 - (age / (buff.length + 1))).clamp(0.1, 0.6);
+            plots.add(
+              LineChartBarData(
+                spots: element,
                 isCurved: true,
-                color: colors[index % colors.length].withValues(alpha: opacity),
+                color: color.withValues(alpha: opacity),
                 barWidth: 1,
-                dotData: const FlDotData(show: false)),
-          ),
-        );
+                dotData: const FlDotData(show: false),
+              ),
+            );
+          }
+        }
       }
     }
 
