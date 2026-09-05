@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pslab/others/light_distance_experiment.dart';
@@ -42,6 +44,92 @@ class CommonScaffold extends StatefulWidget {
 }
 
 class _CommonScaffoldState extends State<CommonScaffold> {
+  Timer? _recordingTimer;
+  Duration _recordingElapsed = Duration.zero;
+  DateTime? _recordingStartedAt;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.isRecording) {
+      _startRecordingTimer();
+    }
+  }
+
+  @override
+  void didUpdateWidget(CommonScaffold oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.isRecording && !oldWidget.isRecording) {
+      _startRecordingTimer();
+    } else if (!widget.isRecording && oldWidget.isRecording) {
+      _stopRecordingTimer();
+    }
+  }
+
+  @override
+  void dispose() {
+    _recordingTimer?.cancel();
+    super.dispose();
+  }
+
+  void _startRecordingTimer() {
+    _recordingElapsed = Duration.zero;
+    _recordingStartedAt = DateTime.now();
+    _recordingTimer?.cancel();
+    _recordingTimer = Timer.periodic(const Duration(seconds: 1), (_) {
+      final startedAt = _recordingStartedAt;
+      if (startedAt == null) {
+        return;
+      }
+      setState(() {
+        _recordingElapsed = DateTime.now().difference(startedAt);
+      });
+    });
+  }
+
+  void _stopRecordingTimer() {
+    _recordingTimer?.cancel();
+    _recordingTimer = null;
+    _recordingElapsed = Duration.zero;
+    _recordingStartedAt = null;
+  }
+
+  String _formatRecordingDuration(Duration duration) {
+    final hours = duration.inHours;
+    final minutes = duration.inMinutes.remainder(60).toString().padLeft(2, '0');
+    final seconds = duration.inSeconds.remainder(60).toString().padLeft(2, '0');
+    if (hours > 0) {
+      return '$hours:$minutes:$seconds';
+    }
+    return '$minutes:$seconds';
+  }
+
+  Widget _buildRecordingTimer() {
+    final formatted = _formatRecordingDuration(_recordingElapsed);
+    return Padding(
+      padding: const EdgeInsets.only(right: 4),
+      child: Semantics(
+        label: '${appLocalizations.recordingStarted}: $formatted',
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(Icons.circle, color: appBarContentColor, size: 10),
+            const SizedBox(width: 6),
+            Text(
+              formatted,
+              style: TextStyle(
+                color: appBarContentColor,
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                fontFeatures: const [FontFeature.tabularFigures()],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   void _setPortraitOrientation() {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
@@ -88,6 +176,9 @@ class _CommonScaffoldState extends State<CommonScaffold> {
         );
       }
     } else {
+      if (widget.isRecording) {
+        responsiveActions.add(_buildRecordingTimer());
+      }
       if (!isVerySmall && widget.onRecordPressed != null) {
         responsiveActions.add(
           IconButton(
