@@ -30,12 +30,16 @@ enum ChannelMeasurements {
   negativePeak
 }
 
-List<Color> colors = [
+final List<Color> colors = [
   Colors.cyan,
   Colors.green,
   Colors.white,
   Colors.purpleAccent
 ];
+
+final List<Color> curveFitColors = [Colors.yellow];
+
+final List<Color> xyPlotColors = [Colors.red];
 
 class OscilloscopeStateProvider extends ChangeNotifier {
   late OscilloscopeConfigProvider _configProvider;
@@ -1290,7 +1294,6 @@ class OscilloscopeStateProvider extends ChangeNotifier {
   }
 
   List<LineChartBarData> createPlots() {
-    List<Color> curveFitColors = [Colors.yellow];
     List<LineChartBarData> plots = [];
 
     print("createPlots");
@@ -1363,14 +1366,13 @@ class OscilloscopeStateProvider extends ChangeNotifier {
   }
 
   List<LineChartBarData> createXYPlot() {
-    List<Color> colors = [Colors.red];
     return List<LineChartBarData>.generate(
       dataEntriesXYPlot.length,
       (index) {
         return LineChartBarData(
           spots: dataEntriesXYPlot[index],
           isCurved: true,
-          color: colors[index % colors.length],
+          color: xyPlotColors[index % xyPlotColors.length],
           barWidth: 1,
           dotData: const FlDotData(
             show: false,
