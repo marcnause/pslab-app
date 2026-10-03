@@ -46,11 +46,16 @@ class _DigitalWaveformControlsState extends State<DigitalWaveformControls> {
                             borderRadius: BorderRadius.circular(6),
                           ),
                         ),
-                        child: Text(
-                          appLocalizations.sqr1.toUpperCase(),
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 14,
+                        child: Semantics(
+                          selected:
+                              waveGeneratorStateProvider.selectedDigitalWave ==
+                                  WaveConst.sqr1,
+                          child: Text(
+                            appLocalizations.sqr1.toUpperCase(),
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                            ),
                           ),
                         ),
                         onPressed: () => {
@@ -74,11 +79,16 @@ class _DigitalWaveformControlsState extends State<DigitalWaveformControls> {
                             borderRadius: BorderRadius.circular(6),
                           ),
                         ),
-                        child: Text(
-                          appLocalizations.sqr2.toUpperCase(),
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 14,
+                        child: Semantics(
+                          selected:
+                              waveGeneratorStateProvider.selectedDigitalWave ==
+                                  WaveConst.sqr2,
+                          child: Text(
+                            appLocalizations.sqr2.toUpperCase(),
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                            ),
                           ),
                         ),
                         onPressed: () => {
@@ -102,11 +112,16 @@ class _DigitalWaveformControlsState extends State<DigitalWaveformControls> {
                             borderRadius: BorderRadius.circular(6),
                           ),
                         ),
-                        child: Text(
-                          appLocalizations.sqr3.toUpperCase(),
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 14,
+                        child: Semantics(
+                          selected:
+                              waveGeneratorStateProvider.selectedDigitalWave ==
+                                  WaveConst.sqr3,
+                          child: Text(
+                            appLocalizations.sqr3.toUpperCase(),
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                            ),
                           ),
                         ),
                         onPressed: () => {
@@ -130,11 +145,16 @@ class _DigitalWaveformControlsState extends State<DigitalWaveformControls> {
                             borderRadius: BorderRadius.circular(6),
                           ),
                         ),
-                        child: Text(
-                          appLocalizations.sqr4.toUpperCase(),
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 14,
+                        child: Semantics(
+                          selected:
+                              waveGeneratorStateProvider.selectedDigitalWave ==
+                                  WaveConst.sqr4,
+                          child: Text(
+                            appLocalizations.sqr4.toUpperCase(),
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                            ),
                           ),
                         ),
                         onPressed: () => {
@@ -167,11 +187,15 @@ class _DigitalWaveformControlsState extends State<DigitalWaveformControls> {
                             borderRadius: BorderRadius.circular(6),
                           ),
                         ),
-                        child: Text(
-                          appLocalizations.freq,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 14,
+                        child: Semantics(
+                          selected: waveGeneratorStateProvider.propSelected ==
+                              WaveConst.frequency,
+                          child: Text(
+                            appLocalizations.freq,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                            ),
                           ),
                         ),
                         onPressed: () => {
@@ -198,11 +222,16 @@ class _DigitalWaveformControlsState extends State<DigitalWaveformControls> {
                                   borderRadius: BorderRadius.circular(6),
                                 ),
                               ),
-                              child: Text(
-                                appLocalizations.phase,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 14,
+                              child: Semantics(
+                                selected:
+                                    waveGeneratorStateProvider.propSelected ==
+                                        WaveConst.phase,
+                                child: Text(
+                                  appLocalizations.phase,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 14,
+                                  ),
                                 ),
                               ),
                               onPressed: () => {
@@ -228,11 +257,15 @@ class _DigitalWaveformControlsState extends State<DigitalWaveformControls> {
                             borderRadius: BorderRadius.circular(6),
                           ),
                         ),
-                        child: Text(
-                          appLocalizations.duty,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 14,
+                        child: Semantics(
+                          selected: waveGeneratorStateProvider.propSelected ==
+                              WaveConst.duty,
+                          child: Text(
+                            appLocalizations.duty,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                            ),
                           ),
                         ),
                         onPressed: () => {

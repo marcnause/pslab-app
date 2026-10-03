@@ -65,6 +65,7 @@ class _NavDrawerState extends State<NavDrawer> {
               ),
             ),
             ListTile(
+              selected: widget.selectedIndex == 0,
               focusColor: listTileFocusColor,
               dense: true,
               leading: Icon(
@@ -91,6 +92,7 @@ class _NavDrawerState extends State<NavDrawer> {
               },
             ),
             ListTile(
+              selected: widget.selectedIndex == 13,
               focusColor: listTileFocusColor,
               dense: true,
               leading: Icon(
@@ -123,6 +125,7 @@ class _NavDrawerState extends State<NavDrawer> {
               },
             ),
             ListTile(
+              selected: widget.selectedIndex == 1,
               focusColor: listTileFocusColor,
               dense: true,
               leading: Icon(
@@ -156,6 +159,7 @@ class _NavDrawerState extends State<NavDrawer> {
             ),
             const Divider(),
             ListTile(
+              selected: widget.selectedIndex == 2,
               focusColor: listTileFocusColor,
               dense: true,
               leading: Icon(
@@ -188,6 +192,7 @@ class _NavDrawerState extends State<NavDrawer> {
               },
             ),
             ListTile(
+              selected: widget.selectedIndex == 3,
               focusColor: listTileFocusColor,
               dense: true,
               leading: Icon(
@@ -221,6 +226,7 @@ class _NavDrawerState extends State<NavDrawer> {
               },
             ),
             ListTile(
+              selected: widget.selectedIndex == 4,
               focusColor: listTileFocusColor,
               dense: true,
               leading: Icon(
@@ -253,6 +259,7 @@ class _NavDrawerState extends State<NavDrawer> {
             ),
             const Divider(),
             ListTile(
+              selected: widget.selectedIndex == 5,
               focusColor: listTileFocusColor,
               dense: true,
               leading: Icon(
@@ -284,6 +291,7 @@ class _NavDrawerState extends State<NavDrawer> {
               },
             ),
             ListTile(
+              selected: widget.selectedIndex == 6,
               focusColor: listTileFocusColor,
               dense: true,
               leading: Icon(
@@ -313,6 +321,7 @@ class _NavDrawerState extends State<NavDrawer> {
               },
             ),
             ListTile(
+              selected: widget.selectedIndex == 7,
               focusColor: listTileFocusColor,
               dense: true,
               leading: Icon(
@@ -351,6 +360,7 @@ class _NavDrawerState extends State<NavDrawer> {
               },
             ),
             ListTile(
+                selected: widget.selectedIndex == 8,
                 focusColor: listTileFocusColor,
                 dense: true,
                 leading: Icon(
@@ -378,6 +388,7 @@ class _NavDrawerState extends State<NavDrawer> {
                   }
                 }),
             ListTile(
+              selected: widget.selectedIndex == 9,
               focusColor: listTileFocusColor,
               dense: true,
               leading: Icon(
@@ -409,6 +420,7 @@ class _NavDrawerState extends State<NavDrawer> {
               },
             ),
             ListTile(
+              selected: widget.selectedIndex == 10,
               focusColor: listTileFocusColor,
               dense: true,
               leading: Icon(
@@ -436,6 +448,7 @@ class _NavDrawerState extends State<NavDrawer> {
               },
             ),
             ListTile(
+              selected: widget.selectedIndex == 11,
               focusColor: listTileFocusColor,
               dense: true,
               leading: Icon(
@@ -465,6 +478,7 @@ class _NavDrawerState extends State<NavDrawer> {
               },
             ),
             ListTile(
+              selected: widget.selectedIndex == 12,
               focusColor: listTileFocusColor,
               dense: true,
               leading: Icon(
